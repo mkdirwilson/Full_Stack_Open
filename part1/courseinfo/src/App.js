@@ -8,7 +8,7 @@ const Header = (props) => (
 // Part component
 const Part = (props) => (
   <>
-    <p>{props.name} {props.number}</p>
+    <p>{props.name} : {props.number}</p>
   </>
 )
 
@@ -16,8 +16,8 @@ const Part = (props) => (
 const Content = (props) =>  (
   <>
     <Part name={props.parts[0].name} number={props.parts[0].exercises}/>
-    <Part name={props.parts[0].name} number={props.parts[1].exercises}/>
-    <Part name={props.parts[0].name} number={props.parts[2].exercises}/>
+    <Part name={props.parts[1].name} number={props.parts[1].exercises}/>
+    <Part name={props.parts[2].name} number={props.parts[2].exercises}/>
   </>
 )
 
@@ -26,7 +26,7 @@ const Content = (props) =>  (
 // Total coponent 
 const Total = (props) => (
   <>
-    <p>The total number of exercises is {props.total}</p>
+    <p>Total number of exercises: {props.parts[0].exercises + props.parts[1].exercises + props.parts[2].exercises}</p>
   </>
 )
 
@@ -56,7 +56,7 @@ const App = () => {
 
       <Content parts={parts}/>
 
-      <Total total={parts[0].exercises + parts[1].exercises + parts[2].exercises}/>
+      <Total parts={parts}/>
     
     </>
   )
