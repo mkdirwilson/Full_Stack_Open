@@ -1,9 +1,23 @@
 import { useState } from "react"
 
-// DisplayAnecdote component 
-const DisplayAnecdote = ({anecdote, selected})=> {
+
+// Header component 
+
+const Header = (props) => {
   return (
-    <p>{anecdote[selected]}</p>
+    <>
+      <h1>{props.text}</h1>
+    </>
+  )
+}
+
+// DisplayAnecdote component 
+const DisplayAnecdote = ({anecdote, selected, votes})=> {
+  return (
+    <>
+      <p>{anecdote[selected]}</p>
+      <p>Has {votes} votes</p>
+    </> 
   )
 }
 
@@ -31,17 +45,37 @@ const App = ()=> {
   ]
 
   const [selected, setSelected] = useState(0)
+  const [points, setVote] = useState(Array(anecdotes.length).fill(0))
 
+  // zero filled array of defined length
+  
+
+  // Remember that the correct way of updating state stored in complex data structures like objects and arrays is to make a copy of the state and update it
+  
+  const castVote = ()=> {
+    const copy = [...points]
+    copy[selected] += 1
+    setVote(copy)
+  }
+
+  // compute random number
   const randomIndex = ()=> {
     const randNum = Math.floor(Math.random() * anecdotes.length)
     setSelected(randNum)
   }
+
+  // find the index of the maximum anecdote
+  const IndexOfMax = points.indexOf(Math.max(...points))
+
   
   return (
     <>
-      <DisplayAnecdote anecdote={anecdotes} selected={selected}/>
+      <Header text="Anecdote of the day"/>
+      <DisplayAnecdote anecdote={anecdotes} selected={selected} votes={points[selected]}/>
+      <Button handleClick={castVote}  text="vote"/>
       <Button handleClick={randomIndex} text="next anecdote"/>
-
+      <Header text="Anecdote with most votes"/>
+      <DisplayAnecdote anecdote={anecdotes} selected={IndexOfMax} votes={points[IndexOfMax]}/>
     </>
   )
 }
