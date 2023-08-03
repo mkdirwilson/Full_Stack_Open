@@ -17,11 +17,29 @@ const Button = ({handleClick, text}) => {
   )
 }
 
+
 // FeedbackStats component 
-const FeedbackStats = ({feedback, count})=>
+const FeedbackStats = ({good, neutral, bad})=>
 {
+  const total = good + neutral + bad
+  const average = (good - bad) / total
+  const positivePercentage = (good / total) * 100
+
+  if (total === 0)
+  {
+    return (
+        <p>No feedback given</p>
+    )
+  }
   return (
-    <div>{feedback} {count}</div>
+      <>
+        <div>good {good}</div>
+        <div>neutral {neutral}</div>
+        <div>bad {bad}</div>
+        <div>all {total}</div>
+        <div>average {average}</div>
+        <div>positive {positivePercentage} %</div>
+      </>
   )
 }
 
@@ -44,15 +62,6 @@ const App = () =>
 
   const handleBadClick = ()=> setBad(bad + 1)
 
-  // variable for all feedbacks
-  const total = good + neutral + bad;
-
-  // variable to compute the average
-  const average = (good - bad) / total || 0
-
-  // compute percentage of positive feedback
-  const positive_percentage = (good / total * 100) || 0
-
 
   return (
     <>
@@ -64,12 +73,7 @@ const App = () =>
 
     <Header text="statistics"/>
 
-    <FeedbackStats feedback="good" count={good}/>
-    <FeedbackStats feedback="neutral" count={neutral}/>
-    <FeedbackStats feedback="bad" count={bad}/>
-    <FeedbackStats feedback="all" count={total}/>
-    <FeedbackStats feedback="average" count={average}/>
-    <FeedbackStats feedback="positve" count={positive_percentage + "%"}/>
+    <FeedbackStats good={good} neutral={neutral} bad={bad}/>
     </>
   )
 }
