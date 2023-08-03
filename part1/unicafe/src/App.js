@@ -17,10 +17,24 @@ const Button = ({handleClick, text}) => {
   )
 }
 
+// statisticLine component
+const StatisticLine = ({text, value})=> {
+  return (
+    <table>
+      <tbody>
+        <tr>
+          <td>{text}</td>
+          <td>{value}</td>
+        </tr>
+      </tbody>
+    </table>
+  )
+}
+
 
 // FeedbackStats component 
 const FeedbackStats = ({good, neutral, bad})=>
-{
+{ 
   const total = good + neutral + bad
   const average = (good - bad) / total
   const positivePercentage = (good / total) * 100
@@ -32,14 +46,14 @@ const FeedbackStats = ({good, neutral, bad})=>
     )
   }
   return (
-      <>
-        <div>good {good}</div>
-        <div>neutral {neutral}</div>
-        <div>bad {bad}</div>
-        <div>all {total}</div>
-        <div>average {average}</div>
-        <div>positive {positivePercentage} %</div>
-      </>
+    <>
+      <StatisticLine text="good" value={good}/>
+      <StatisticLine text="neutral" value={neutral}/>
+      <StatisticLine text="bad" value={bad}/>
+      <StatisticLine text="all" value={total}/>
+      <StatisticLine text="average" value={average}/>
+      <StatisticLine text="positive" value={positivePercentage + " %"}/>
+    </>   
   )
 }
 
