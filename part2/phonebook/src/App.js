@@ -6,16 +6,27 @@ const App = ()=> {
 
   const [newName, setNewName] = useState('')
 
+
+
   const handlePersonChange = (event)=>{
     setNewName(event.target.value)
   }
 
   const addPerson = (event)=>{
     event.preventDefault()
-    const newPerson = {name: newName}
 
-    setPersons(persons.concat(newPerson))
+    if (persons.some((person)=>person.name === newName))
+    {
+      alert(`${newName} is already added`)
+    }
+
+    else {
+      const newPerson = {name: newName}
+      setPersons(persons.concat(newPerson))
+    }
+    
     setNewName('')
+  
   }
 
 
