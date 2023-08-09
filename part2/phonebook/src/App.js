@@ -1,3 +1,6 @@
+import Filter from "./components/Filter";
+import PersonForm from "./components/PersonForm";
+import Persons from "./components/Persons";
 import { useState } from "react";
 
 const App = ()=> {
@@ -40,7 +43,11 @@ const App = ()=> {
     }
 
     else {
-      const newPerson = {name: newName, number: newNumber}
+      const newPerson = {name: newName, 
+        number: newNumber,
+        id: persons.length + 1
+      }
+
       setPersons(persons.concat(newPerson))
     }
     
@@ -56,30 +63,14 @@ const App = ()=> {
   return (
     <>
       <h2>Phonebook</h2>
-      <p>
-        filter shown with: <input onChange={handleFilterChange} value={newFilter}></input>
-      </p>
+      <Filter filterHandler={handleFilterChange} newFilter={newFilter}/>
 
       <h3>Add a new contact</h3>
 
-      <form onSubmit={addPerson}>
-          <p>
-             name: <input onChange={handlePersonChange} value={newName}  placeholder="Enter name..." ></input>
-          </p>
-
-          <p>
-            number: <input onChange={handleNumberChange} value={newNumber} placeholder="Enter number..." ></input>
-          </p>
-
-          <p>
-            <button type="submit">add</button>
-          </p>
-      </form>
+      <PersonForm addPerson={addPerson} newName={newName} handlePersonChange={handlePersonChange} newNumber={newNumber} handleNumberChange={handleNumberChange}/>
 
       <h2>Numbers</h2>
-      {numbersToShow.map(person=>
-        <p key={person.name}>{person.name} {person.number}</p>
-      )}
+      <Persons numbersToShow={numbersToShow}/>
     </>
   )
 }
