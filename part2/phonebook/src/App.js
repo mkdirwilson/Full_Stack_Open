@@ -49,7 +49,6 @@ const App = ()=> {
 
       const newPerson = {name: newName, 
         number: newNumber,
-        id: persons.length + 1
       }
 
       personServices
@@ -62,6 +61,17 @@ const App = ()=> {
     setNewName('')
     setNewNumber('')
   
+  }
+
+  const handleDeletePerson = (id) => {
+    personServices
+    .remove(id)
+    .then(()=>
+        setPersons(persons.filter(person=>person.id !== id))
+      )
+    .catch(error=>
+      console.log(error)
+      )
   }
 
 
@@ -78,7 +88,7 @@ const App = ()=> {
       <PersonForm addPerson={addPerson} newName={newName} handlePersonChange={handlePersonChange} newNumber={newNumber} handleNumberChange={handleNumberChange}/>
 
       <h2>Numbers</h2>
-      <Persons numbersToShow={numbersToShow}/>
+      <Persons numbersToShow={numbersToShow} handleDeletePerson={handleDeletePerson}/>
     </>
   )
 }

@@ -1,34 +1,24 @@
 {
   "persons": [
     {
-      "name": "Arto Hellas",
-      "number": "040-123456",
-      "id": 1
-    },
-    {
-      "name": "Ada Lovelace",
-      "number": "39-44-5323523",
-      "id": 2
-    },
-    {
-      "name": "Dan Abramov",
-      "number": "12-43-234345",
-      "id": 3
-    },
-    {
       "name": "Mary Poppendieck",
       "number": "39-23-6423122",
       "id": 4
     },
     {
-      "name": "Michael Addai",
-      "number": "0501673248",
-      "id": 5
+      "name": "Asamoah Gyan ",
+      "number": "32123123",
+      "id": 2
     },
     {
-      "name": "Peter Amankwah",
-      "number": "+44-12123123213",
-      "id": 6
+      "name": "Bizmark osei gyan ",
+      "number": "90912312",
+      "id": 3
+    },
+    {
+      "name": "Peter Oduro",
+      "number": "3341221",
+      "id": 5
     }
   ]
 }
