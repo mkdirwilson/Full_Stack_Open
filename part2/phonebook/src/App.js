@@ -64,14 +64,22 @@ const App = ()=> {
   }
 
   const handleDeletePerson = (id) => {
-    personServices
-    .remove(id)
-    .then(()=>
+
+    const person = persons.find(person=>person.id === id)
+
+    const confirmDelete = window.confirm(`Delete ${person.name}`)
+
+    if (confirmDelete){
+
+      personServices
+      .remove(id)
+      .then(()=>
         setPersons(persons.filter(person=>person.id !== id))
       )
-    .catch(error=>
+      .catch(error=>
       console.log(error)
       )
+    }
   }
 
 
