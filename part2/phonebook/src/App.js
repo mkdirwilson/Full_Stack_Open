@@ -37,31 +37,49 @@ const App = ()=> {
 
   
 
-  const addPerson = (event)=>{
-    event.preventDefault()
-
-    if (persons.some((person)=>person.name === newName))
-    {
-      alert(`${newName} is already added`)
-    }
-
-    else {
-
-      const newPerson = {name: newName, 
-        number: newNumber,
-      }
-
-      personServices
-      .create(newPerson)
-      .then(returnedPerson=>
-          setPersons(persons.concat(returnedPerson))
-        )
-    }
-    
-    setNewName('')
-    setNewNumber('')
+  const addPerson = (event) => {
+    event.preventDefault();
   
-  }
+    const personToUpdate = persons.find(person => person.name.toLowerCase() === newName.toLowerCase());
+  
+    if (personToUpdate) {
+      const confirmed = window.confirm(
+        `${personToUpdate.name} is already added to the phonebook, replace the old number with a new number?`
+      );
+  
+      if (confirmed) {
+        const updatedPerson = { ...personToUpdate, number: newNumber };
+  
+        personServices
+          .update(updatedPerson, updatedPerson.id)
+          .then(returnedPerson => {
+            setPersons(persons.map(person=> person.id !== updatedPerson.id ? person : returnedPerson))
+          })
+          .catch(error => {
+            console.error("Error updating person:", error);
+          });
+      }
+    } else {
+      const newPerson = {
+        name: newName,
+        number: newNumber,
+      };
+  
+      personServices
+        .create(newPerson)
+        .then(returnedPerson => {
+          setPersons(persons.concat(returnedPerson));
+        })
+        .catch(error => {
+          console.error("Error creating person:", error);
+        });
+    }
+  
+    // Reset the state here, outside of the if-else block
+    setNewName('');
+    setNewNumber('');
+  };
+
 
   const handleDeletePerson = (id) => {
 
