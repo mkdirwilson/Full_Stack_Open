@@ -5,14 +5,16 @@ import axios from "axios";
 
 
 const WeatherData = ({ country }) => {
-  const apiKey = 'bce6702650df726224410128958734b7';
+  // eslint-disable-next-line no-undef
+  const api_key = process.env.REACT_APP_API_KEY
+// variable api_key now has the value set in startup
 
   const [weather, setWeather] = useState({});
 
   useEffect(() => {
     if (country) {
       axios
-        .get(`https://api.openweathermap.org/data/2.5/weather?lat=${country.lat}&lon=${country.long}&appid=${apiKey}`)
+        .get(`https://api.openweathermap.org/data/2.5/weather?lat=${country.lat}&lon=${country.long}&appid=${api_key}`)
         .then(response => {
           setWeather(response.data);
         })
@@ -20,7 +22,7 @@ const WeatherData = ({ country }) => {
           console.error('Error fetching weather data:', error);
         });
     }
-  }, [country]);
+  }, [api_key, country]);
 
   return (
     <>
