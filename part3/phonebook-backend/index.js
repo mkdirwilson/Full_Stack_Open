@@ -2,6 +2,9 @@
 const express = require("express")
 const app = express()
 
+// To be pars JSON data of request to Javascipt Object
+app.use(express.json())
+
 
 // initialize our phonebook persons
 let persons = [
@@ -32,6 +35,18 @@ app.get('/api/persons', (request, response)=>{
   response.json(persons)
 })
 
+
+// HTTP GET to fetch the info page
+app.get('/info', (request, response)=>{
+  
+  const currentDate = new Date()
+  const numEntries = Math.max(...persons.map(person=>person.id))
+
+  response.send(`
+  <p>Phonebook has infor for ${numEntries} people</p>
+   <p> ${currentDate}</p>
+   `)
+})
 
 // Run our server on a specified port and console log server is running 
 const PORT = 3001
