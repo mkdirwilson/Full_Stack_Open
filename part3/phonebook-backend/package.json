@@ -1,0 +1,18 @@
+{
+  "name": "phonebook-backend",
+  "version": "1.0.0",
+  "description": "Node application that returns a hardcoded list of phonebook entries",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \\\"Error: no test specified\\\" && exit 1",
+    "start": "node index.js"
+  },
+  "author": "Prince Wilson",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.18.2"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.1"
+  }
+}
