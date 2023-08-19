@@ -2,15 +2,31 @@
 const express = require("express")
 const app = express()
 
+// import the morgan middleware for logging request
+const morgan = require('morgan')
 
 // To be pars JSON data of request to Javascipt Object
 app.use(express.json())
 
-// import the morgan middleware for logging request
-const morgan = require('morgan')
 
 // use the tiny format to log requests
 app.use(morgan('tiny'))
+
+
+// using custom token as discribed by the morgan docs to log request with HTTP POST
+morgan.token('type', (request, response)=>{
+
+  if (request.method == 'POST') {
+    return JSON.stringify(request.body)
+  }
+
+  return ''
+  
+})
+
+
+// using the morgan middleware with the custom token
+app.use(morgan(':method :url :status :res[content-length] - :response-time ms:type'))
 
 
 // initialize our phonebook persons
