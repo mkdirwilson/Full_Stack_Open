@@ -48,6 +48,94 @@ app.get('/info', (request, response)=>{
    `)
 })
 
+
+// HTTP GET to fetch a specific person from persons
+app.get('/api/persons/:id', (request, response)=>{
+  // Get the id from the url path
+  const id = Number(request.params.id)
+
+  // find the person with that id
+  const person = persons.find(person=>person.id === id)
+
+  // if there is a person respond with that persn or throw in  not found status 404
+  person ? response.json(person) : response.status(404).end()
+
+  
+  // The above is the same as this below
+  // if (person) {
+  //   response.json(person)
+  // }
+
+  // else {
+  //   response.status(404).end()
+  // }
+})
+
+
+// HTTP delete request to delete a person from the phone book
+
+app.delete('/api/persons/:id', (request, response)=>{
+  // Find the id number 
+  const id = Number(request.params.id)
+
+  // remove the person with that id by filtering the persons
+  persons = persons.filter(person=>person.id !== id)
+
+  // response with a no-content status
+  response.status(204).end()
+
+})
+
+
+// Helper function to generate id
+
+const generateId = () => {
+  const min = persons.length 
+  const max = 3001
+
+  const maxId = Math.floor(Math.random() * (max - min) + min)
+
+  return maxId + 1
+}
+
+
+// HTTP post to add new entry to the phonebook
+app.post('/api/persons', (request, response)=>{
+  // iniitialise body with the body of the request
+  const body = request.body 
+
+  // return if name of the body is empty and exit with a 400 status which is a bad request status 
+  if (!(body.name) || !(body.number)) {
+    return response.status(400).json({
+      error: 'name or number is missing'
+    })
+  }
+
+  // returns a conflict status 409 if name already is in the list of persons
+  if (persons.some(person=>person.name === body.name))
+  {
+    return response.status(409).json({
+      error: 'name must be unique'
+    })
+  }
+
+  // populate the person object
+  const person = {
+    name: body.name,
+    number: body.number,
+    id: generateId()
+  }
+
+  
+  // add the new person 
+  persons.concat(person)
+
+  // respond with the object of the new person
+  response.json(person)
+
+})
+
+
 // Run our server on a specified port and console log server is running 
 const PORT = 3001
 
