@@ -2,8 +2,15 @@
 const express = require("express")
 const app = express()
 
+
 // To be pars JSON data of request to Javascipt Object
 app.use(express.json())
+
+// import the morgan middleware for logging request
+const morgan = require('morgan')
+
+// use the tiny format to log requests
+app.use(morgan('tiny'))
 
 
 // initialize our phonebook persons
