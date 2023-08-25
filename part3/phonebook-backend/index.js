@@ -1,6 +1,8 @@
 // import express
 const express = require("express")
+const cors = require("cors")
 const app = express()
+
 
 // import the morgan middleware for logging request
 const morgan = require('morgan')
@@ -11,6 +13,10 @@ app.use(express.json())
 
 // use the tiny format to log requests
 app.use(morgan('tiny'))
+
+
+// 
+app.use(cors())
 
 
 // using custom token as discribed by the morgan docs to log request with HTTP POST
@@ -160,7 +166,7 @@ app.post('/api/persons', (request, response)=>{
 
 
 // Run our server on a specified port and console log server is running 
-const PORT = 3001
+const PORT = process.env.PORT || 3001
 
 app.listen(PORT, ()=>{
   console.log(`server running on port ${PORT}`)
