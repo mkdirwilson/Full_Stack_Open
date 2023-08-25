@@ -18,6 +18,9 @@ app.use(morgan('tiny'))
 // 
 app.use(cors())
 
+//
+app.use(express.static('build'))
+
 
 // using custom token as discribed by the morgan docs to log request with HTTP POST
 morgan.token('type', (request, response)=>{
