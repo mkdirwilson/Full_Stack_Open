@@ -1,7 +1,14 @@
+
+require('dotenv').config()
+
 // import express
 const express = require("express")
 const cors = require("cors")
 const app = express()
+
+// import the Person db
+
+const Person  = require('./models/person')
 
 
 // import the morgan middleware for logging request
@@ -38,33 +45,12 @@ morgan.token('type', (request, response)=>{
 app.use(morgan(':method :url :status :res[content-length] - :response-time ms:type'))
 
 
-// initialize our phonebook persons
-let persons = [
-  { 
-    "id": 1,
-    "name": "Arto Hellas", 
-    "number": "040-123456"
-  },
-  { 
-    "id": 2,
-    "name": "Ada Lovelace", 
-    "number": "39-44-5323523"
-  },
-  { 
-    "id": 3,
-    "name": "Dan Abramov", 
-    "number": "12-43-234345"
-  },
-  { 
-    "id": 4,
-    "name": "Mary Poppendieck", 
-    "number": "39-23-6423122"
-  }
-]
 
 // HTTP GET to fetch the phone persons
 app.get('/api/persons', (request, response)=>{
-  response.json(persons)
+  Person.find({}).then(people=>{
+    response.json(people)
+  })
 })
 
 
@@ -169,7 +155,7 @@ app.post('/api/persons', (request, response)=>{
 
 
 // Run our server on a specified port and console log server is running 
-const PORT = process.env.PORT || 3001
+const PORT = process.env.PORT 
 
 app.listen(PORT, ()=>{
   console.log(`server running on port ${PORT}`)
