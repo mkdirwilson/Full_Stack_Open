@@ -118,38 +118,57 @@ const generateId = () => {
 
 
 // HTTP post to add new entry to the phonebook
-app.post('/api/persons', (request, response)=>{
-  // iniitialise body with the body of the request
-  const body = request.body 
+// app.post('/api/persons', (request, response)=>{
+//   // iniitialise body with the body of the request
+//   const body = request.body 
 
-  // return if name of the body is empty and exit with a 400 status which is a bad request status 
-  if (!(body.name) || !(body.number)) {
-    return response.status(400).json({
-      error: 'name or number is missing'
-    })
-  }
+//   // return if name of the body is empty and exit with a 400 status which is a bad request status 
+//   if (!(body.name) || !(body.number)) {
+//     return response.status(400).json({
+//       error: 'name or number is missing'
+//     })
+//   }
 
-  // returns a conflict status 409 if name already is in the list of persons
-  if (persons.some(person=>person.name === body.name))
-  {
-    return response.status(409).json({
-      error: 'name must be unique'
-    })
-  }
+//   // returns a conflict status 409 if name already is in the list of persons
+//   if (persons.some(person=>person.name === body.name))
+//   {
+//     return response.status(409).json({
+//       error: 'name must be unique'
+//     })
+//   }
 
-  // populate the person object
-  const person = {
-    name: body.name,
-    number: body.number,
-    id: generateId()
-  }
+//   // populate the person object
+//   const person = {
+//     name: body.name,
+//     number: body.number,
+//     id: generateId()
+//   }
 
   
-  // add the new person 
-  persons.concat(person)
+//   // add the new person 
+//   persons.concat(person)
 
-  // respond with the object of the new person
-  response.json(person)
+//   // respond with the object of the new person
+//   response.json(person)
+
+// })
+
+app.post('/api/persons', (request, response)=>{
+  const body = request.body 
+
+  if (body === undefined){
+    response.status(400).json({error: 'content missing'})
+  }
+
+  const person = new Person({
+    name: body.name,
+    number: body.number
+  })
+
+  
+  person.save().then(savedPerson=>{
+    response.json(savedPerson)
+  })
 
 })
 
