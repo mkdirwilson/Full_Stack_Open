@@ -7,12 +7,33 @@ const cors = require("cors")
 const app = express()
 
 // import the Person db
-
 const Person  = require('./models/person')
 
 
 // import the morgan middleware for logging request
 const morgan = require('morgan')
+
+
+
+
+// handling of unknown endpoints
+const unknownEndpoint = (request, response) => {
+  response.status(404).send({ error: 'unknown endpoint' })
+}
+
+
+// error handling middleware
+const errorHandler = (error, request, response, next) => {
+  console.error(error.message)
+
+  if (error.name === 'CastError') {
+    return response.status(400).send({ error: 'malformatted id' })
+  }
+
+  next(error)
+}
+
+
 
 // To be pars JSON data of request to Javascipt Object
 app.use(express.json())
@@ -58,25 +79,37 @@ app.get('/api/persons', (request, response)=>{
 app.get('/info', (request, response)=>{
   
   const currentDate = new Date()
-  const numEntries = Math.max(...persons.map(person=>person.id))
 
-  response.send(`
-  <p>Phonebook has infor for ${numEntries} people</p>
-   <p> ${currentDate}</p>
+  Person.countDocuments({})
+  .then(numEntries=>{
+    response.send(`
+    <p>Phonebook has info for ${numEntries} people</p>
+    <p> ${currentDate}</p>
    `)
+  })
+  .catch(error=>next(error))
+  
 })
 
 
 // HTTP GET to fetch a specific person from persons
 app.get('/api/persons/:id', (request, response)=>{
-  // Get the id from the url path
-  const id = Number(request.params.id)
 
-  // find the person with that id
-  const person = persons.find(person=>person.id === id)
+  Person.findById(request.params.id)
+  .then(person=>{
+    response.json(person)
+  })
+  .catch(error=>next(error))
 
-  // if there is a person respond with that persn or throw in  not found status 404
-  person ? response.json(person) : response.status(404).end()
+
+  // // Get the id from the url path
+  // const id = Number(request.params.id)
+
+  // // find the person with that id
+  // const person = persons.find(person=>person.id === id)
+
+  // // if there is a person respond with that persn or throw in  not found status 404
+  // person ? response.json(person) : response.status(404).end()
 
   
   // The above is the same as this below
@@ -93,28 +126,25 @@ app.get('/api/persons/:id', (request, response)=>{
 // HTTP delete request to delete a person from the phone book
 
 app.delete('/api/persons/:id', (request, response)=>{
-  // Find the id number 
-  const id = Number(request.params.id)
 
-  // remove the person with that id by filtering the persons
-  persons = persons.filter(person=>person.id !== id)
-
-  // response with a no-content status
-  response.status(204).end()
-
+  Person.findByIdAndRemove(request.params.id)
+  .then(result=>{
+      response.status(204).end()
+  })
+  .catch(error=>next(error))
 })
 
 
 // Helper function to generate id
 
-const generateId = () => {
-  const min = persons.length 
-  const max = 3001
+// const generateId = () => {
+//   const min = persons.length 
+//   const max = 3001
 
-  const maxId = Math.floor(Math.random() * (max - min) + min)
+//   const maxId = Math.floor(Math.random() * (max - min) + min)
 
-  return maxId + 1
-}
+//   return maxId + 1
+// }
 
 
 // HTTP post to add new entry to the phonebook
@@ -164,13 +194,37 @@ app.post('/api/persons', (request, response)=>{
     name: body.name,
     number: body.number
   })
-
   
   person.save().then(savedPerson=>{
     response.json(savedPerson)
   })
 
 })
+
+
+
+app.put('/api/persons/:id', (request, response)=>{
+  const body = request.body
+
+  const person = {
+    name: body.name,
+    number: body.number
+  }
+
+  Person.findByIdAndUpdate(request.params.id, person, {new: true})
+  .then(updatedPerson=>{
+    response.json(updatedPerson)
+  })
+  .catch(error=>next(error))
+})
+
+
+
+
+
+
+app.use(unknownEndpoint)
+app.use(errorHandler)
 
 
 // Run our server on a specified port and console log server is running 
