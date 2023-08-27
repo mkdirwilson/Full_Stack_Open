@@ -107,15 +107,19 @@ const App = () => {
             borderRadius: 5,
           });
         })
-        .catch(error => {
-          if (error.response && error.response.data && error.response.data._message) {
-            // Display the full validation error message as an alert
-            alert(error.response.data._message);
-          } else {
-            // Handle other types of errors or status codes
-            console.error('An error occurred:', error);
-          }
-        });
+        .catch(error=>{
+          showAlert(error.response.data.error, 
+            {
+              fontSize: 16,
+              fontWeight: "bold",
+              color: "red",
+              backgroundColor: "lightGrey",
+              padding: 10,
+              marginBottom: 10,
+              border: "solid 3 red",
+              borderRadius: 5,
+            } )
+        })
     }
   
     // Reset the state here, outside of the if-else block

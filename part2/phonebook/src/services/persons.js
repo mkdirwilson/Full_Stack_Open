@@ -1,6 +1,9 @@
 import axios from "axios";
 
-const baseurl = 'http://localhost:3001/api/persons'
+
+const apiBaseUrl = process.env.REACT_APP_API_BASE_URL || '';
+
+const baseurl = `${apiBaseUrl}/api/persons`
 
 // Read the data
 const getAll = () => {
