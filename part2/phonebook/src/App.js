@@ -40,19 +40,19 @@ const App = () => {
 
   const addPerson = (event) => {
     event.preventDefault();
-
+  
     const personToUpdate = persons.find(
       (person) => person.name.toLowerCase() === newName.toLowerCase()
     );
-
+  
     if (personToUpdate) {
       const confirmed = window.confirm(
         `${personToUpdate.name} is already added to the phonebook, replace the old number with a new number?`
       );
-
+  
       if (confirmed) {
         const updatedPerson = { ...personToUpdate, number: newNumber };
-
+  
         personServices
           .update(updatedPerson, updatedPerson.id)
           .then((returnedPerson) => {
@@ -73,7 +73,7 @@ const App = () => {
           })
           .catch((error) => {
             showAlert(
-              `Information on ${updatedPerson.name} has already been deleted from the server`,
+              `Information on ${personToUpdate.name} has already been deleted from the server`,
               {
                 fontSize: 16,
                 fontWeight: "bold",
@@ -92,7 +92,7 @@ const App = () => {
         name: newName,
         number: newNumber,
       };
-
+  
       personServices
         .create(newPerson)
         .then((returnedPerson) => {
@@ -107,11 +107,17 @@ const App = () => {
             borderRadius: 5,
           });
         })
-        .catch((error) => {
-          console.log(error);
+        .catch(error => {
+          if (error.response && error.response.data && error.response.data._message) {
+            // Display the full validation error message as an alert
+            alert(error.response.data._message);
+          } else {
+            // Handle other types of errors or status codes
+            console.error('An error occurred:', error);
+          }
         });
     }
-
+  
     // Reset the state here, outside of the if-else block
     setNewName("");
     setNewNumber("");
