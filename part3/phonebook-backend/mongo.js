@@ -7,7 +7,6 @@
 //   process.exit(1)
 // }
 
-
 // //get the password, name and number of the phonebook entry the user will enter
 
 // const password = process.argv[2]
@@ -17,7 +16,6 @@
 // // url for the databse with the name of the database
 // const url =
 //   `mongodb+srv://mkdirwilson:${password}@cluster0.w91ghym.mongodb.net/phoneBook?retryWrites=true&w=majority`
-
 
 // mongoose.set('strictQuery',false)
 // mongoose.connect(url)
@@ -40,7 +38,7 @@
 //     console.log(`added ${name} ${number} to phonebook`)
 //     mongoose.connection.close()
 //   })
-  
+
 // }
 
 // else {
@@ -52,6 +50,3 @@
 //     mongoose.connection.close()
 //   })
 // }
-
-
-
