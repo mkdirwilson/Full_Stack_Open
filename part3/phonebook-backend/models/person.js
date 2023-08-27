@@ -20,6 +20,8 @@ const personSchema = new mongoose.Schema({
     minLength: 3,
     required: true
   },
+
+  // custome validation
   number: {
     type: String,
     minLength: 8,
