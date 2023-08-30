@@ -1,7 +1,7 @@
 /* eslint-disable no-undef */
 
 // import the express router middleware and bloglish schema
-const blogRouter = require('express').Router;
+const blogRouter = require('express').Router();
 const Blog = require('../models/bloglist');
 
 // configure get router to fetch all blogs
